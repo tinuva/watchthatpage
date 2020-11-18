@@ -12,8 +12,12 @@ ADD https://github.com/just-containers/s6-overlay/releases/download/v1.21.2.2/s6
 RUN tar xzf /tmp/s6-overlay-amd64.tar.gz -C /
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
-	apt-get install -q -y xvfb libfontconfig wkhtmltopdf openssl ca-certificates bash cron && \
+	apt-get install -q -y xvfb libfontconfig openssl ca-certificates bash cron && \
+	apt-get install -q -y build-essential xorg libssl-dev libxrender-dev wget
 	apt-get clean
+
+RUN wget http://download.gna.org/wkhtmltopdf/0.12/0.12.3/wkhtmltox-0.12.3_linux-generic-amd64.tar.xz && \
+    tar xf wkhtmltox-0.12.3_linux-generic-amd64.tar.xz
 
 COPY resources /resources
 COPY --from=builder /go/bin/watchthatpage /bin/watchthatpage
